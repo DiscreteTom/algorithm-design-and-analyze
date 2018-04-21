@@ -47,7 +47,7 @@
 其他注释
 
 - 时间单位为微妙(microsecond)
-- 数据取自附件sort.txt
+- 数据取自附件[sort.txt](sort.txt)
 - 同一长度下的数据已根据DD从小到大排序
 
 | SEQ code | Length | M   | DD        | ADD     | RMS     | NRMS | QS      | QSOC    | RQS     |
@@ -155,7 +155,7 @@
 	- 有序检测快速排序递归层次普遍低于普通快速排序 花费时间更短
 	- 随机基准快速排序优化效果不明显 递归层次和运行时间不能够稳定优于普通快速排序
 
-## 附1 源码(附件sort.cpp)
+## 附1 源码(附件[sort.cpp](sort.cpp))
 
 	#include <iostream>
 	#include <fstream>
@@ -469,7 +469,7 @@
 	}
 
 
-## 附2 程序输出结果(附件sort.txt)
+## 附2 程序输出结果(附件[sort.txt](sort.txt))
 
 	Please input L
 	6
