@@ -1,0 +1,14 @@
+points at the same location is allowed
+closest distance : 0
+Point1 id : 568471 longitude : 102.721 latitude : 25.045600
+Point2 id : 568849 longitude : 102.721 latitude : 25.045600
+
+points at the same location is allowed
+closest distance : 6
+Point1 id : 567389 longitude : 102.741 latitude : 25.053888
+Point2 id : 566803 longitude : 102.741 latitude : 25.053940
+
+points at the same location is NOT allowed
+2nd closest distance : 57
+Point1 id : 567760 longitude : 102.740 latitude : 25.051339
+Point2 id : 567760 longitude : 102.740 latitude : 25.051853
