@@ -8,7 +8,7 @@ using namespace std;
 
 enum FROM {STR1, STR2, EQUAL};
 
-int f(const string & str1, const string & str2, string & receiver);
+void f(const string & str1, const string & str2);
 
 int main(){
 	// =================================== input
@@ -21,25 +21,29 @@ int main(){
 
 	//cout << a << endl << b << endl << c << endl << d << endl;
 
-	string receiver;
+	string LCS;
 
 	// ==================================== A B
-	cout << f(a, b, receiver) << endl << receiver << endl;
+	cout << "a, b\n";
+	f(a, b);
 
 	// ==================================== C D
-	cout << f(c, d, receiver) << endl << receiver << endl;
+	cout << "c, d\n";
+	f(c, d);
 
 	// ==================================== A D
-	cout << f(a, d, receiver) << endl << receiver << endl;
+	cout << "a, d\n";
+	f(a, d);
 
 	// ==================================== C B
-	cout << f(c, b, receiver) << endl << receiver << endl;
+	cout << "c, b\n";
+	f(c, b);
 
 	system("pause");
 	return 0;
 }
 
-int f(const string & str1, const string & str2, string & receiver){
+void f(const string & str1, const string & str2){
 	// ==================================== get memory
 	int ** length = new int*[str1.length()];
 	FROM ** from = new FROM*[str1.length()];
@@ -84,11 +88,11 @@ int f(const string & str1, const string & str2, string & receiver){
 	result = length[str1.length() - 1][str2.length() - 1];
 
 	// =============================== LCS
-	receiver = "";
+	string LCS = "";
 	int i = str1.length() - 1, j = str2.length() - 1;
 	while (i >= 0 && j >= 0){
 		if (from[i][j] == EQUAL){
-			receiver.insert(receiver.begin(), str1[i]);
+			LCS.insert(LCS.begin(), str1[i]);
 			--i;
 			--j;
 		} else if (from[i][j] == STR1){
@@ -106,5 +110,6 @@ int f(const string & str1, const string & str2, string & receiver){
 	delete [] length;
 	delete [] from;
 
-	return result;
+	cout << result << endl;
+	cout << LCS << endl;
 }
