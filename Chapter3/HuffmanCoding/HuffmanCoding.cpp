@@ -159,8 +159,8 @@ int main(){
 	for (int i = 0; i < 5; ++i){
 		charNum += str[i].length();
 	}
-	cout << charNum * 8 * 8 << endl;//8 bits per byte, 8 byte per char
-	fout << charNum * 8 * 8 << endl;//8 bits per byte, 8 byte per char
+	cout << charNum * 8 << endl;//8 bit per char
+	fout << charNum * 8 << endl;//8 bit per char
 	int bitNum = 0;
 	for (int i = 0; i < codes.size(); ++i){
 		if (codes[i].c >= 'a' && codes[i].c <= 'z'){

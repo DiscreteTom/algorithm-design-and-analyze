@@ -93,5 +93,6 @@ n: 0010
 e: 000
 
 bit length:
-Using Fixed Length Coding: 134400
+Using Fixed Length Coding: 16800
 Using Huffman Coding: 8798
+Compress rate: 0.52369
