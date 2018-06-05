@@ -40,8 +40,8 @@ int main(){
 
 	// f(dis, stationCode, 567443);
 	// f(dis, stationCode, 567443, 33109);
-	// f(dis, stationCode, 565845);
-	f(dis, stationCode, 565845, 565667);
+	f(dis, stationCode, 565845);
+	// f(dis, stationCode, 565845, 565667);
 	
 
 	system("pause");
@@ -76,6 +76,7 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 	}
 	set[sourceIndex] = true;
 	bool flag = true;//if set[i] = true for all i, flag = false
+	vector<int> path[STATION_NUM];
 	
 	while (flag){
 		//------------------ add one more station in set
@@ -83,7 +84,7 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 		int closestIndex = -1;
 		double closestDis = -1;
 		for (int i = 0; i < STATION_NUM; ++i){
-			if (!set[i]){//not in set
+			if (!set[i] && dis[i][sourceIndex] != -1){//not in set & reachable point
 				if (closestDis == -1 || dis[i][sourceIndex] < closestDis){
 					closestDis = dis[i][sourceIndex];
 					closestIndex = i;
@@ -101,6 +102,8 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 					if (dis[sourceIndex][i] == -1 || dis[sourceIndex][i] > dis[sourceIndex][closestIndex] + dis[closestIndex][i]){
 						dis[sourceIndex][i] = dis[sourceIndex][closestIndex] + dis[closestIndex][i];
 						dis[i][sourceIndex] = dis[sourceIndex][i];
+						path[i] = path[closestIndex];
+						path[i].push_back(closestIndex);
 					}
 				}
 			}
@@ -115,7 +118,7 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 			}
 		}
 
-		//one-to-one situation
+		//one-to-one situation, break loop
 		if (sinkIndex != -1){
 			if (set[sinkIndex]){
 				flag = false;
@@ -124,15 +127,33 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 	}
 
 	//------------------------------- output
+	ofstream fout;
+	fout.open("output.txt");
 	if (sinkIndex == -1){
 		cout << "All path from " << sourceCode << ":\n";
+		fout << "All path from " << sourceCode << ":\n";
 		for (int i = 0; i < STATION_NUM; ++i){
 			if (i != sourceIndex){
 				cout << "To " << stationCode[i] << ": " << dis[sourceIndex][i] << endl;
+				fout << "To " << stationCode[i] << ": " << dis[sourceIndex][i] << endl;
+				cout << "\tPath:\n";
+				fout << "\tPath:\n";
+				for (int i = 0; i < path[i].size(); ++i){
+					cout << "\t" << stationCode[i] << endl;
+					fout << "\t" << stationCode[i] << endl;
+				}
 			}
 		}
 	} else {
 		cout << "Distance from " << sourceCode << " to " << sinkCode << " is ";
+		fout << "Distance from " << sourceCode << " to " << sinkCode << " is ";
 		cout << dis[sourceIndex][sinkIndex] << endl;
+		fout << dis[sourceIndex][sinkIndex] << endl;
+		cout << "\tPath:\n";
+		fout << "\tPath:\n";
+		for (int i = 0; i < path[sinkIndex].size(); ++i){
+			cout << "\t" << stationCode[sinkIndex] << endl;
+			fout << "\t" << stationCode[sinkIndex] << endl;
+		}
 	}
 }
