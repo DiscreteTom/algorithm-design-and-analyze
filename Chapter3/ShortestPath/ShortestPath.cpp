@@ -4,10 +4,18 @@
 
 using namespace std;
 
-// #define FILE_NAME "matrix22.txt"
-// #define STATION_NUM 22
+//========================== use this to control output
+#define SITUATION_22
+#define SINK_STATION_EXIST
+//======================================================
+
+#ifdef SITUATION_22
+#define FILE_NAME "matrix22.txt"
+#define STATION_NUM 22
+#else
 #define FILE_NAME "matrix42.txt"
 #define STATION_NUM 42
+#endif//SITUATION_22
 
 void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCode = -1);
 
@@ -38,11 +46,19 @@ int main(){
 	// 	}
 	// }
 
-	// f(dis, stationCode, 567443);
-	// f(dis, stationCode, 567443, 33109);
+#ifdef SITUATION_22
+#ifndef SINK_STATION_EXIST
+	f(dis, stationCode, 567443);
+#else //define SINK_STATION_EXIST
+	f(dis, stationCode, 567443, 33109);
+#endif //SINK_STATION_EXIST
+#else //not define SITUATION_22
+#ifndef SINK_STATION_EXIST
 	f(dis, stationCode, 565845);
-	// f(dis, stationCode, 565845, 565667);
-	
+#else //define SINK_STATION_EXIST
+	f(dis, stationCode, 565845, 565667);
+#endif //SINK_STATION_EXIST
+#endif //SITUATION_22
 
 	system("pause");
 	return 0;
@@ -83,31 +99,27 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 		//get closest station which is not in set
 		int closestIndex = -1;
 		double closestDis = -1;
+		int from = -1;
 		for (int i = 0; i < STATION_NUM; ++i){
-			if (!set[i] && dis[i][sourceIndex] != -1){//not in set & reachable point
-				if (closestDis == -1 || dis[i][sourceIndex] < closestDis){
-					closestDis = dis[i][sourceIndex];
-					closestIndex = i;
-				}
-			}
-		}
-
-		//put closest station in set
-		set[closestIndex] = true;
-
-		//refresh distance
-		for (int i = 0; i < STATION_NUM; ++i){
-			if (i != sourceIndex){
-				if (dis[i][closestIndex] != -1){
-					if (dis[sourceIndex][i] == -1 || dis[sourceIndex][i] > dis[sourceIndex][closestIndex] + dis[closestIndex][i]){
-						dis[sourceIndex][i] = dis[sourceIndex][closestIndex] + dis[closestIndex][i];
-						dis[i][sourceIndex] = dis[sourceIndex][i];
-						path[i] = path[closestIndex];
-						path[i].push_back(closestIndex);
+			if (set[i]){//middle station
+				for (int j = 0; j < STATION_NUM; ++j){
+					if (!set[j] && dis[i][j] != -1){//new point
+						if (closestDis == -1 || closestDis > dis[i][j]){
+							closestDis = dis[i][j];
+							closestIndex = j;
+							from = i;
+						}
 					}
 				}
 			}
 		}
+
+		//=================================== now we get the new point
+
+		set[closestIndex] = true;//put closest station in set
+		dis[sourceIndex][closestIndex] = dis[sourceIndex][from] + dis[from][closestIndex];//refresh distance
+		path[closestIndex] = path[from];
+		path[closestIndex].push_back(from);
 
 		//judge flag
 		flag = false;
@@ -128,7 +140,19 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 
 	//------------------------------- output
 	ofstream fout;
-	fout.open("output.txt");
+#ifdef SITUATION_22
+#ifndef SINK_STATION_EXIST
+	fout.open("output1.txt");
+#else //define SINK_STATION_EXIST
+	fout.open("output2.txt");
+#endif //SINK_STATION_EXIST
+#else //not define SITUATION_22
+#ifndef SINK_STATION_EXIST
+	fout.open("output3.txt");
+#else //define SINK_STATION_EXIST
+	fout.open("output4.txt");
+#endif //SINK_STATION_EXIST
+#endif //SITUATION_22
 	if (sinkIndex == -1){
 		cout << "All path from " << sourceCode << ":\n";
 		fout << "All path from " << sourceCode << ":\n";
@@ -138,9 +162,9 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 				fout << "To " << stationCode[i] << ": " << dis[sourceIndex][i] << endl;
 				cout << "\tPath:\n";
 				fout << "\tPath:\n";
-				for (int i = 0; i < path[i].size(); ++i){
-					cout << "\t" << stationCode[i] << endl;
-					fout << "\t" << stationCode[i] << endl;
+				for (int j = 0; j < path[i].size(); ++j){
+					cout << "\t" << stationCode[path[i][j]] << endl;
+					fout << "\t" << stationCode[path[i][j]] << endl;
 				}
 			}
 		}
@@ -152,8 +176,8 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 		cout << "\tPath:\n";
 		fout << "\tPath:\n";
 		for (int i = 0; i < path[sinkIndex].size(); ++i){
-			cout << "\t" << stationCode[sinkIndex] << endl;
-			fout << "\t" << stationCode[sinkIndex] << endl;
+			cout << "\t" << stationCode[path[sinkIndex][i]] << endl;
+			fout << "\t" << stationCode[path[sinkIndex][i]] << endl;
 		}
 	}
 }
