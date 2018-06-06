@@ -99,31 +99,27 @@ void f(double dis[][STATION_NUM], int stationCode[], int sourceCode, int sinkCod
 		//get closest station which is not in set
 		int closestIndex = -1;
 		double closestDis = -1;
+		int from = -1;
 		for (int i = 0; i < STATION_NUM; ++i){
-			if (!set[i] && dis[i][sourceIndex] != -1){//not in set & reachable point
-				if (closestDis == -1 || dis[i][sourceIndex] < closestDis){
-					closestDis = dis[i][sourceIndex];
-					closestIndex = i;
-				}
-			}
-		}
-
-		//put closest station in set
-		set[closestIndex] = true;
-
-		//refresh distance
-		for (int i = 0; i < STATION_NUM; ++i){
-			if (i != sourceIndex){
-				if (dis[i][closestIndex] != -1){
-					if (dis[sourceIndex][i] == -1 || dis[sourceIndex][i] > dis[sourceIndex][closestIndex] + dis[closestIndex][i]){
-						dis[sourceIndex][i] = dis[sourceIndex][closestIndex] + dis[closestIndex][i];
-						dis[i][sourceIndex] = dis[sourceIndex][i];
-						path[i] = path[closestIndex];
-						path[i].push_back(closestIndex);
+			if (set[i]){//middle station
+				for (int j = 0; j < STATION_NUM; ++j){
+					if (!set[j] && dis[i][j] != -1){//new point
+						if (closestDis == -1 || closestDis > dis[i][j]){
+							closestDis = dis[i][j];
+							closestIndex = j;
+							from = i;
+						}
 					}
 				}
 			}
 		}
+
+		//=================================== now we get the new point
+
+		set[closestIndex] = true;//put closest station in set
+		dis[sourceIndex][closestIndex] = dis[sourceIndex][from] + dis[from][closestIndex];//refresh distance
+		path[closestIndex] = path[from];
+		path[closestIndex].push_back(from);
 
 		//judge flag
 		flag = false;
