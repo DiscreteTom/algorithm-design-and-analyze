@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define DEBUG//for debug
+// #define DEBUG//for debug
 
 //======================================== use this to control input
 #define STATION_NUM 15
@@ -146,21 +146,31 @@ void f(int stationCode[], double dis[][STATION_NUM], int startCode){
 		cout << "Error\n";
 		return;
 	}
-
+	vector<int> resultVector;
 #ifndef DEBUG
-	cout << "Path: " << endl << stationCode[startIndex] << endl;
+	cout << "Path: " << endl << "  " << stationCode[startIndex] << endl;
 	for (int i = 0; i < STATION_NUM; ++i){
+		cout << "->";
 		cout << stationCode[resultStack.top()] << endl;
+		resultVector.push_back(resultStack.top());
 		resultStack.pop();
 	}
 #else
-	cout << "Path: " << endl << startIndex << endl;
+	cout << "Path: " << endl << "  " << startIndex << endl;
 	for (int i = 0; i < STATION_NUM; ++i){
+		cout << "->";
+		resultVector.push_back(resultStack.top());
 		cout << resultStack.top() << endl;
 		resultStack.pop();
 	}
 #endif
-	cout << "\nMin weight path distance: " << minDis << endl;
+	cout << "\nMin weight path distance:\n";
+	cout << "   " << dis[startIndex][resultVector[0]] << endl;
+	for (int i = 0; i < STATION_NUM - 1; ++i){
+		cout << " + ";
+		cout << dis[resultVector[i]][resultVector[i + 1]] << endl;
+	}
+	cout << " = " << minDis << endl;
 	cout << "Count station " << count << "times\n";
 	cout << "Time cost: " << (endTime - startTime) / 1000 << "s\n";
 }
