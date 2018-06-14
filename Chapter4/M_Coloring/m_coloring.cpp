@@ -79,7 +79,7 @@ int main(){
 void f(int stationCode[], bool reachable[][STATION_NUM]){
 	int color[STATION_NUM];//color, from 1 to COLOR_NUM, 0 for uncolored
 	long count = 0;//how many nodes we scanned
-	for (int i = 0; i < STATION_NUM; ++i){//init c[]
+	for (int i = 0; i < STATION_NUM; ++i){//init color[]
 		color[i] = 0;
 	}
 
@@ -96,6 +96,10 @@ void f(int stationCode[], bool reachable[][STATION_NUM]){
 		int currentStation = stationStack.top();
 		int currentColor = colorStack.top();
 		++count;
+		if (currentStation == COLOR_NUM - 2 && currentColor == COLOR_NUM){
+			cout << "Error\n";
+			return;
+		}
 
 		bool colorUsed = false;
 		//judge whether color currentStation with currentColor is feasible
@@ -123,6 +127,10 @@ void f(int stationCode[], bool reachable[][STATION_NUM]){
 #ifdef DEBUG
 					cout << "Cancel coloring station[" << currentStation << "]\n";
 #endif
+					if (!colorStack.size()){
+						cout << "Error!!\n";
+						return;
+					}
 				}
 				currentColor = colorStack.top();
 				colorStack.pop();
@@ -146,21 +154,22 @@ void f(int stationCode[], bool reachable[][STATION_NUM]){
 			}
 		}
 
-#ifndef DEBUG
+#ifdef DEBUG
 		cout << "Progress: " << stationStack.size() << "/" << STATION_NUM << endl;
 #endif
 	}
 
-#ifdef DEBUG
+	auto endTime = clock();
+	//output
 	cout << "\n\nFinal result:\n";
 	for (int i = 0; i < STATION_NUM; ++i){
 		cout << "Color station[" << i << "] with color[" << color[i] - 1 << "]\n";
 	}
-#endif
-
-	auto endTime = clock();
-	//output
-	cout << "\nColor number : " << COLOR_NUM << endl;
+	cout << "\nStation number : " << STATION_NUM << endl;
+	cout << "Color number : " << COLOR_NUM << endl;
 	cout << "Search nodes : " << count << endl;
-	cout << "Time : " << (endTime - startTime) / 1000 << "s\n";
+	if (endTime - startTime > 1000)
+		cout << "Time : " << (endTime - startTime) / 1000 << "s\n";
+	else
+		cout << "Time : " << endTime - startTime << "ms\n";
 }
