@@ -142,6 +142,7 @@ void f(int stationCode[], double dis[][STATION_NUM], int startCode){
 	auto endTime = clock();
 
 	//====================================== output
+	cout << "======================= Using BackTrack ======================";
 	if (resultStack.size() != STATION_NUM){
 		cout << "Error\n";
 		return;
@@ -172,7 +173,10 @@ void f(int stationCode[], double dis[][STATION_NUM], int startCode){
 	}
 	cout << " = " << minDis << endl;
 	cout << "Count station " << count << "times\n";
-	cout << "Time cost: " << (endTime - startTime) / 1000 << "s\n";
+	if (endTime - startTime > 1000)
+		cout << "Time cost: " << (endTime - startTime) / 1000 << "s\n";
+	else
+		cout << "Time cost: " << endTime - startTime << "ms\n";
 }
 
 bool back(double dis[][STATION_NUM], bool inStationStack[], stack<int> & stationStack, stack<double> & disStack){
