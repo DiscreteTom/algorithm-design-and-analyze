@@ -10,8 +10,9 @@ using namespace std;
 // #define DEBUG//for debug
 
 //======================================== use this to control input
-#define STATION_NUM 15
+// #define STATION_NUM 15
 // #define STATION_NUM 20
+#define STATION_NUM 22
 //=================================================================
 
 //--------------------------DO NOT CHANGE THIS
@@ -19,6 +20,8 @@ using namespace std;
 #define FILE_NAME "tsp15.txt"
 #elif STATION_NUM == 20
 #define FILE_NAME "tsp20.txt"
+#elif STATION_NUM == 22
+#define FILE_NAME "tsp22.txt"
 #endif
 //--------------------------------------------
 
