@@ -12,7 +12,8 @@ using namespace std;
 //======================================== use this to control input
 // #define STATION_NUM 15
 // #define STATION_NUM 20
-#define STATION_NUM 22
+// #define STATION_NUM 22
+#define STATION_NUM 30
 //=================================================================
 
 //--------------------------DO NOT CHANGE THIS
@@ -22,6 +23,8 @@ using namespace std;
 #define FILE_NAME "tsp20.txt"
 #elif STATION_NUM == 22
 #define FILE_NAME "tsp22.txt"
+#elif STATION_NUM == 30
+#define FILE_NAME "tsp30.txt"
 #endif
 //--------------------------------------------
 
@@ -55,15 +58,15 @@ int main(){
 	// 		cout << "\tdistence to " << stationCode[j] << " is " << dis[i][j] << endl;
 	// 	}
 	// }
-	// for (int i = 0; i < STATION_NUM; ++i){
-	// 	cout << "station index: " << i << endl;
-	// 	for (int j = 0; j < STATION_NUM; ++j){
-	// 		cout << "\tdistence to station" << j << " is " << dis[i][j] << endl;
-	// 	}
-	// }
+	for (int i = 0; i < STATION_NUM; ++i){
+		cout << "station index: " << i << endl;
+		for (int j = 0; j < STATION_NUM; ++j){
+			cout << "\tdistence to station" << j << " is " << dis[i][j] << endl;
+		}
+	}
 #endif
 
-	f(stationCode, dis, 567443);
+	f(stationCode, dis, 565492);
 
 	system("pause");
 	return 0;
@@ -200,8 +203,8 @@ void f(const int stationCode[], const double dis[][STATION_NUM], int startCode){
 			cout << "-> " << stationCode[resultPath[i]] << endl;
 		}
 		cout << "Distance:\n";
-		cout << "   " << dis[startIndex][resultPath[0]] << endl;
-		for (int i = 1; i < resultPath.size(); ++i){
+		cout << "   " << dis[resultPath[0]][resultPath[1]] << endl;
+		for (int i = 2; i < resultPath.size(); ++i){
 			cout << " + " << dis[resultPath[i - 1]][resultPath[i]] << endl;
 		}
 		cout << " = " << result << endl;
